@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Form, Button, Card, Alert } from 'react-bootstrap'
-import { useAuth as toto } from '../context/AuthContext'
-import { useAuth } from '../hooks/useAuth'
+import { useAuth, useCurrentUser } from '../customHooks/hooks'
 import { Link } from 'react-router-dom'
 
 const UpdateProfile = () => {
@@ -13,7 +12,7 @@ const UpdateProfile = () => {
 	const [messagePassword, setMessagePassword] = useState(false)
 	const [loading, setLoading] = useState(false)
 	const { updateEmail, updatePassword } = useAuth()
-	const { currentUser } = toto()
+	const currentUser = useCurrentUser()
 
 	const handleSubmitMail = (e) => {
 		e.preventDefault()
@@ -23,8 +22,8 @@ const UpdateProfile = () => {
 		setMessageMail(false)
 		setLoading(true)
 
-		if (email !== currentUser.email) {
-			updateEmail(currentUser, email)
+		if (email !== currentUser.auth.email) {
+			updateEmail(currentUser.auth, email)
 			.then(() => {
 				setMessageMail({type: 'success', message: 'Your email is modified'})
 			})
@@ -49,7 +48,7 @@ const UpdateProfile = () => {
 		}
 
 		if (password !== '') {
-			updatePassword(currentUser, password)
+			updatePassword(currentUser.auth, password)
 			.then(() => {
 				setMessagePassword({type: 'success', message: 'Your password is modified'})
 			})
@@ -68,7 +67,7 @@ const UpdateProfile = () => {
 					<Form onSubmit={handleSubmitMail}>
 						<Form.Group id="email">
 							<Form.Label>Email</Form.Label>
-							<Form.Control type="email" ref={emailRef} defaultValue={currentUser.email}/>
+							<Form.Control type="email" ref={emailRef} defaultValue={currentUser.auth.email}/>
 						</Form.Group>
 						{messageMail && <Alert variant={messageMail.type === 'error' ? "danger" : 'success'}>{messageMail.message}</Alert>}
 						<Button disabled={loading} className="w-100" type="submit">Update Mail</Button>

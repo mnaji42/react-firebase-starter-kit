@@ -25,8 +25,6 @@ class Auth {
 	updatePassword = (userAuth, password) => {
 		return userAuth.updatePassword(password)
 	}
-
-	test = () => console.log('useAuth works')
 }
 
 export function useAuth() {

@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { Card, Button, Alert } from 'react-bootstrap'
-import { useAuth as toto } from '../context/AuthContext'
-import { useAuth } from '../hooks/useAuth'
+import { useAuth, useCurrentUser } from '../customHooks/hooks'
 import { Link, useHistory } from 'react-router-dom'
 
 const Dashboard = () => {
 
 	const [error, setError] = useState()
-	const { currentUser } = toto()
+	const currentUser = useCurrentUser()
 	const { logout } = useAuth()
 	const history = useHistory()
 
@@ -29,7 +28,7 @@ const Dashboard = () => {
 				<Card.Body>
 					<h2 className="w-100 text-center mb-4">Profile</h2>
 					{error && <Alert variant="danger">{error}</Alert>}
-					<strong>email :</strong> {currentUser.email}
+					<strong>email :</strong> {currentUser.auth.email}
 					<Link to='/update-profile' className="btn btn-primary w-100">Updtate Profile</Link>
 				</Card.Body>
 			</Card>

@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Form, Button, Card, Alert } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-// import { useAuth } from '../context/AuthContext'
-import { useAuth } from '../hooks/useAuth'
+import { useAuth } from '../customHooks/hooks'
 
 const ForgotPassword = () => {
 
