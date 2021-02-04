@@ -5,7 +5,7 @@ import UpdateProfile from './UpdateProfile'
 import Dashboard from './Dashboard'
 import PrivateRoute from './PrivateRoute'
 import classes from './App.module.css';
-import { useAuth } from '../Context/AuthContext'
+import { useAuth } from '../context/AuthContext'
 import { BrowserRouter as Router, Switch} from 'react-router-dom'
 
 function App() {
