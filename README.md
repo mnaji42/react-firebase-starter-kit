@@ -1,1 +1,1 @@
-# ReactAuth
+# React-FIREBASE-STARTER-KIT
