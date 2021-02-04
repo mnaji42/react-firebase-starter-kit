@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Form, Button, Card, Alert } from 'react-bootstrap'
-import { useAuth } from '../context/AuthContext'
+import { useAuth as toto } from '../context/AuthContext'
+import { useAuth } from '../hooks/useAuth'
 import { Link } from 'react-router-dom'
 
 const UpdateProfile = () => {
@@ -11,7 +12,8 @@ const UpdateProfile = () => {
 	const [messageMail, setMessageMail] = useState(false)
 	const [messagePassword, setMessagePassword] = useState(false)
 	const [loading, setLoading] = useState(false)
-	const { currentUser, updateEmail, updatePassword } = useAuth()
+	const { updateEmail, updatePassword } = useAuth()
+	const { currentUser } = toto()
 
 	const handleSubmitMail = (e) => {
 		e.preventDefault()
@@ -22,7 +24,7 @@ const UpdateProfile = () => {
 		setLoading(true)
 
 		if (email !== currentUser.email) {
-			updateEmail(email)
+			updateEmail(currentUser, email)
 			.then(() => {
 				setMessageMail({type: 'success', message: 'Your email is modified'})
 			})
@@ -47,7 +49,7 @@ const UpdateProfile = () => {
 		}
 
 		if (password !== '') {
-			updatePassword(password)
+			updatePassword(currentUser, password)
 			.then(() => {
 				setMessagePassword({type: 'success', message: 'Your password is modified'})
 			})

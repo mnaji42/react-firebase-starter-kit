@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Form, Button, Card, Alert } from 'react-bootstrap'
 import { Link, useHistory } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../hooks/useAuth'
 
 const Login = () => {
 
@@ -54,7 +54,7 @@ const Login = () => {
 			</Card>
 			<div className="w-100 text-center mt-2">
 				You do not have an account ? <Link to='/signup'>Sign Up</Link>
-			</div>	
+			</div>
 		</>
 	);
 };

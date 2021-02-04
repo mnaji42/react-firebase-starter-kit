@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Card, Button, Alert } from 'react-bootstrap'
-import { useAuth } from '../context/AuthContext'
+import { useAuth as toto } from '../context/AuthContext'
+import { useAuth } from '../hooks/useAuth'
 import { Link, useHistory } from 'react-router-dom'
 
 const Dashboard = () => {
 
 	const [error, setError] = useState()
-	const { currentUser, logout } = useAuth()
+	const { currentUser } = toto()
+	const { logout } = useAuth()
 	const history = useHistory()
 
 	const handleLogOut = () => {
