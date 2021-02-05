@@ -29,6 +29,17 @@ const Dashboard = () => {
 					<h2 className="w-100 text-center mb-4">Profile</h2>
 					{error && <Alert variant="danger">{error}</Alert>}
 					<strong>email :</strong> {currentUser.auth.email}
+					<p>
+						{currentUser.data ? (
+							<>
+								<strong>first name: </strong>{currentUser.data.firstName}<br/>
+								<strong>last name:</strong> {currentUser.data.lastName}<br/>
+								<strong>birthday:</strong> {currentUser.data.birthday}<br/>
+							</>
+							):
+							 "You don't have data, update your profile to add them"
+						}
+					</p>
 					<Link to='/update-profile' className="btn btn-primary w-100">Updtate Profile</Link>
 				</Card.Body>
 			</Card>

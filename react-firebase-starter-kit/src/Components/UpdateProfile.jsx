@@ -1,17 +1,22 @@
 import React, { useRef, useState } from 'react';
 import { Form, Button, Card, Alert } from 'react-bootstrap'
-import { useAuth, useCurrentUser } from '../customHooks/hooks'
+import { useAuth, useCurrentUser, useFirestore } from '../customHooks/hooks'
 import { Link } from 'react-router-dom'
 
 const UpdateProfile = () => {
 
 	const emailRef = useRef()
+	const firstNameRef = useRef()
+	const lastNameRef = useRef()
+	const birthdayRef = useRef()
 	const passwordRef = useRef()
 	const passwordConfirmRef = useRef()
 	const [messageMail, setMessageMail] = useState(false)
+	const [messageData, setMessageData] = useState(false)
 	const [messagePassword, setMessagePassword] = useState(false)
 	const [loading, setLoading] = useState(false)
 	const { updateEmail, updatePassword } = useAuth()
+	const { updateUser, setUser } = useFirestore()
 	const currentUser = useCurrentUser()
 
 	const handleSubmitMail = (e) => {
@@ -59,11 +64,44 @@ const UpdateProfile = () => {
 		setLoading(false)
 	}
 
+	const handleSubmitData = (e) => {
+		e.preventDefault()
+
+		setMessageData(false)
+		setLoading(true)
+
+		if (currentUser.data) {
+			updateUser(currentUser.auth.id, {
+				firstName: firstNameRef.current.value,
+				lastName: lastNameRef.current.value,
+				birthday: birthdayRef.current.value
+			}).then(() => {
+				setMessageData({type: 'success', message: 'Your data is succesfull update'})
+			}).catch((error) => {
+				setMessageData({type: 'error', message: error.message})
+			}).finally(() => {
+				setLoading(false)
+			})
+		} else {
+			setUser(currentUser.auth.uid, {
+				firstName: firstNameRef.current.value,
+				lastName: lastNameRef.current.value,
+				birthday: birthdayRef.current.value
+			}).then(() => {
+				setMessageData({type: 'success', message: 'Your data is succesfull created'})
+			}).catch((error) => {
+				setMessageData({type: 'error', message: error.message})
+			}).finally(() => {
+				setLoading(false)
+			})
+		}
+	}
+
 	return (
 		<>
 			<Card>
 				<Card.Body>
-					<h2 className="text-center mb-4">Update Profile</h2>
+					<h2 className="text-center mb-4">Update Auth</h2>
 					<Form onSubmit={handleSubmitMail}>
 						<Form.Group id="email">
 							<Form.Label>Email</Form.Label>
@@ -83,6 +121,27 @@ const UpdateProfile = () => {
 						</Form.Group>
 						{messagePassword && <Alert variant={messagePassword.type === 'error' ? "danger" : 'success'}>{messagePassword.message}</Alert>}
 						<Button disabled={loading} className="w-100" type="submit">Update Password</Button>
+					</Form>
+				</Card.Body>
+			</Card>
+			<Card>
+				<Card.Body>
+					<h2 className="text-center mb-4">Update Data</h2>
+					<Form onSubmit={handleSubmitData}>
+						{messageData && <Alert variant={messageData.type === 'error' ? "danger" : 'success'}>{messageData.message}</Alert>}
+						<Form.Group id="firstName">
+							<Form.Label>FirstName</Form.Label>
+							<Form.Control type="text" ref={firstNameRef} defaultValue={currentUser.data ? currentUser.data.firstName : ''}/>
+						</Form.Group>
+						<Form.Group id="lastName">
+							<Form.Label>LastName</Form.Label>
+							<Form.Control type="text" ref={lastNameRef} defaultValue={currentUser.data ? currentUser.data.lastName : ''}/>
+						</Form.Group>
+						<Form.Group id="birthday">
+							<Form.Label>birthday</Form.Label>
+							<Form.Control type="date" ref={birthdayRef} defaultValue={currentUser.data ? currentUser.data.birthday : ''}/>
+						</Form.Group>
+						<Button disabled={loading} className="w-100" type="submit">Update Data</Button>
 					</Form>
 				</Card.Body>
 			</Card>
