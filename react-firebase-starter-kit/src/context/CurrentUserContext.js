@@ -29,8 +29,6 @@ export const CurrentUserProvider = ({ children }) => {
 		data: userData
 	}
 
-	console.log('test')
-
 	return (
 		<CurrentUserContext.Provider value={currentUser}>
 			{!loading && children}

@@ -131,10 +131,6 @@ class Firestore {
 		})
 	}
 
-	getUser = (userId) => {
-		return firestore.collection('users').doc(userId).get()
-	}
-
 	setUser = (userId, data) => {
 		console.log('yoyo:', userId)
 		return this.setNewDoc('users', userId, data)
