@@ -98,7 +98,6 @@ class Firestore {
 				}
 				else {
 					const docs = []
-					console.log(querySnapshot)
 					querySnapshot.forEach((doc) => {
 						// collectionData.push(doc.data())
 						docs.push({id : doc.id, data: doc.data()})
@@ -115,29 +114,11 @@ class Firestore {
 
 	// *********** Users *************
 
-	getDataUser = (userId) => {
-		return new Promise(resolve => {
-			firestore.collection('users').doc(userId).get()
-			.then(usr => {
-				if (!usr.exists) {
-					resolve(null)
-				}
-				resolve(usr.data())
-			})
-			.catch(error => {
-				console.log("User's data can't be load:", error.message)
-				resolve(null)
-			})
-		})
-	}
-
 	setUser = (userId, data) => {
-		console.log('yoyo:', userId)
 		return this.setNewDoc('users', userId, data)
 	}
 
 	updateUser = (userId, data) => {
-		console.log(userId)
 		return this.updateField('users', userId, data)
 	}
 }

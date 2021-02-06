@@ -1,7 +1,5 @@
 import React, { createContext, useState, useEffect} from 'react'
-import { auth } from '../firebase/firebase'
-import { useFirestore } from '../customHooks/hooks'
-
+import { auth, firestore } from '../firebase/firebase'
 
 export const CurrentUserContext = createContext()
 
@@ -10,15 +8,25 @@ export const CurrentUserProvider = ({ children }) => {
 	const [userAuth, setUserAuth] = useState()
 	const [userData, setUserData] = useState(null)
 	const [loading, setLoading] = useState(true)
-	const { getDataUser } = useFirestore()
 
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged(user => {
-			getDataUser(user.uid).then(dataUser => {
-				setUserData(dataUser)
-			})
-			setUserAuth(user)
-			setLoading(false)
+			if (user) {
+				firestore.collection('users').doc(user.uid).onSnapshot(snapshot => {
+					if (snapshot.exists)
+						setUserData(snapshot.data())
+					setUserAuth(user)
+					setLoading(false)
+				}, (error) => {
+					console.log(error)
+					setUserAuth(user)
+					setLoading(false)
+				})
+			}
+			else {
+				setUserAuth(user)
+				setLoading(false)
+			}
 		})
 
 		return unsubscribe

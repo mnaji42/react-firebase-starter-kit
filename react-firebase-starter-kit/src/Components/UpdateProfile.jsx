@@ -71,7 +71,7 @@ const UpdateProfile = () => {
 		setLoading(true)
 
 		if (currentUser.data) {
-			updateUser(currentUser.auth.id, {
+			updateUser(currentUser.auth.uid, {
 				firstName: firstNameRef.current.value,
 				lastName: lastNameRef.current.value,
 				birthday: birthdayRef.current.value
